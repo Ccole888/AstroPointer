@@ -2,6 +2,7 @@
 #include <Stepper.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_HMC5883_U.h>
+#include <String.h>
 
 //SDA green A4 
 //SCL orange A5wX
@@ -13,6 +14,7 @@ Adafruit_HMC5883_Unified mag = Adafruit_HMC5883_Unified(12345);
 
 float azimuth = 0.0; 
 float elevation = 0.0; 
+//String bulkData = "HELO FOFOFOF"; 
 
 //float vecX = 0.0; 
 //float vecY = 0.0;
@@ -96,26 +98,27 @@ void setup(void)
 
 void loop(void)
 {
+  
   if (Serial.available() > 0) {
     //read until terminating character
     String bulkData = Serial.readStringUntil('>'); 
 
     //delete any extra stuff
-    if (bulkdata.startsWith('>')) {
-      bulkdata = bulkdata.substring(1); 
+    if (bulkData.startsWith(">")) {
+      bulkData = bulkData.substring(1); 
     }
 
     //parse data for all of wanted variables:
 
     //get index of azimuth section of stuff
-    int comma = bulkdata.indexOf(','); 
-    azimuth = bulkdata.substring(0, comma).toFloat(); 
-    bulkdata = bulkdata.substring(comma + 1); 
+    int comma = bulkData.indexOf(','); 
+    azimuth = bulkData.substring(0, comma).toFloat(); 
+    bulkData = bulkData.substring(comma + 1); 
 
     //elevation
-    comma = bulkdata.indexOf(','); 
-    elevation = bulkdata.substring(0, comma).toFloat(); 
-    bulkdata = bulkdata.substring(comma + 1); 
+    comma = bulkData.indexOf(','); 
+    elevation = bulkData.substring(0, comma).toFloat(); 
+    bulkData = bulkData.substring(comma + 1); 
 
     /*
     //x
